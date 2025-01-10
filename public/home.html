@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Graph Plotter</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .graph-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        #constantInput {
+            width: 100px;
+            padding: 5px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quadratic Function Plotter</h1>
+        <div class="graph-container">
+            <canvas id="graphCanvas"></canvas>
+            <div class="controls">
+                <label for="constantInput">Enter C value:</label>
+                <input type="number" id="constantInput" value="0" step="1">
+                <button class="btn btn-primary" onclick="updateGraph()">Update Graph</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let myChart;
+        
+        function generatePoints(c) {
+            const points = [];
+            for (let x = -10; x <= 10; x += 0.5) {
+                points.push({
+                    x: x,
+                    y: x * x + parseFloat(c)
+                });
+            }
+            return points;
+        }
+
+        function createGraph(c) {
+            const ctx = document.getElementById('graphCanvas').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: `y = x² + ${c}`,
+                        data: generatePoints(c),
+                        borderColor: '#002395',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'center',
+                            grid: {
+                                color: '#ddd'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'center',
+                            grid: {
+                                color: '#ddd'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Quadratic Function'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateGraph() {
+            const c = document.getElementById('constantInput').value;
+            createGraph(c);
+        }
+
+        // Initial graph
+        createGraph(0);
+    </script>
+</body>
+</html> 

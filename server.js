@@ -6,6 +6,8 @@ const http = require('http');
 const credentials = require('./config');
 const authRoutes = require('./routes/auth');
 const helmet = require('helmet');
+const session = require('express-session');
+const onedriveRoutes = require('./routes/onedrive');
 
 const app = express();
 const PORT = 3000;
@@ -39,7 +41,7 @@ app.post('/login', (req, res) => {
     );
 
     if (validUser) {
-        res.redirect('/welcome.html');
+        res.redirect('/dashboard.html');
     } else {
         res.redirect('/error.html');
     }
@@ -62,3 +64,13 @@ server.on('request', (req, res) => {
 app.use('/auth', authRoutes);
 
 app.use(helmet());
+
+// Add session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false
+}));
+
+// Add OneDrive routes
+app.use('/onedrive', onedriveRoutes);
