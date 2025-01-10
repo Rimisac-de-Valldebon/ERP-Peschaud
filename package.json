@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Rimisac-de-Valldebon/ERP-Peschaud#readme",
   "dependencies": {
     "@microsoft/microsoft-graph-client": "^3.0.7",
+    "axios": "^1.7.9",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "exceljs": "^4.4.0",
