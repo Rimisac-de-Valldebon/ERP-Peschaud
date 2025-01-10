@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const credentials = require('./config');
+const authRoutes = require('./routes/auth');
+const helmet = require('helmet');
 
 const app = express();
 const PORT = 3000;
@@ -55,3 +58,7 @@ server.listen(PORT, () => {
 server.on('request', (req, res) => {
     console.log(`Request received: ${req.method} ${req.url}`);
 });
+
+app.use('/auth', authRoutes);
+
+app.use(helmet());
