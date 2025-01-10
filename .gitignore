@@ -2,7 +2,7 @@
 node_modules/
 
 # Environment variables and credentials
-config.js
+# config.js Because I need to use it in the project on Render
 .env
 
 # Logs
