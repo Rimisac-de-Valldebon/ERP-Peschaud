@@ -3,13 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Graph Plotter</title>
+    <title>Home - ERP Peschaud</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/layout.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        .page-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: left;
+            background: #002395;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-button:hover {
+            background: #001970;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
         .graph-container {
-            width: 80%;
+            width: 100%;
             max-width: 800px;
             margin: 20px auto;
             background: white;
@@ -28,17 +62,59 @@
             padding: 5px;
             margin-right: 10px;
         }
+
+        .logout-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #ED2939;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background: #C41E3A;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #002395;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Quadratic Function Plotter</h1>
-        <div class="graph-container">
-            <canvas id="graphCanvas"></canvas>
-            <div class="controls">
-                <label for="constantInput">Enter C value:</label>
-                <input type="number" id="constantInput" value="0" step="1">
-                <button class="btn btn-primary" onclick="updateGraph()">Update Graph</button>
+    <button class="logout-button" onclick="window.location.href='/'">Logout</button>
+    
+    <div class="page-container">
+        <div class="sidebar">
+            <div class="welcome-text">
+                <h3>Welcome to ERP Peschaud</h3>
+            </div>
+            <button class="sidebar-button" onclick="window.location.href='/dashboard.html'">
+                Main Dashboard
+            </button>
+            <button class="sidebar-button" onclick="window.location.href='/subsidiaries.html'">
+                Choose Subsidiary
+            </button>
+            <button class="sidebar-button" onclick="window.location.href='/departments.html'">
+                Choose Department
+            </button>
+        </div>
+
+        <div class="main-content">
+            <h1>Welcome to ERP Peschaud</h1>
+            <div class="graph-container">
+                <canvas id="graphCanvas"></canvas>
+                <div class="controls">
+                    <label for="constantInput">Enter C value:</label>
+                    <input type="number" id="constantInput" value="0" step="1">
+                    <button class="btn btn-primary" onclick="updateGraph()">Update Graph</button>
+                </div>
             </div>
         </div>
     </div>
@@ -60,7 +136,6 @@
         function createGraph(c) {
             const ctx = document.getElementById('graphCanvas').getContext('2d');
             
-            // Destroy existing chart if it exists
             if (myChart) {
                 myChart.destroy();
             }
