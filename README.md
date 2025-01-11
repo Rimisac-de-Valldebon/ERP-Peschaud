@@ -1,78 +1,99 @@
 # ERP-Peschaud
 
-Welcome to the Future of ERP-Peschaud!
+A web-based Enterprise Resource Planning system built with Express.js and modern web technologies.
 
+## Tech Stack
 
+- **Backend**: Node.js with Express.js
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Authentication**: Express-session
+- **Data Visualization**: Chart.js
+- **Microsoft Integration**: Microsoft Graph API
+- **Excel Processing**: ExcelJS
 
-Here is the Method to the Madness: 
+## Project Structure
 
-1. Project Structure: Organize your project files and directories to accommodate future expansion. Consider using a structure like:
+ERP-Peschaud/
+├── public/
+│   ├── css/
+│   │   ├── auth.css      # Authentication-related styles
+│   │   ├── layout.css    # Layout and structure styles
+│   │   └── style.css     # Global styles
+│   ├── dashboard.html    # Main dashboard interface
+│   ├── home.html        # Home page with interactive graph
+│   ├── index.html       # Login page
+│   └── welcome.html     # Post-login welcome page
+├── routes/
+│   ├── auth.js         # Authentication routes
+│   └── onedrive.js     # Microsoft OneDrive integration
+├── config.js           # Application configuration
+├── server.js           # Main application entry point
+└── .env               # Environment variables
 
-    ERP-Peschaud/
-    ├── config/
-    │   ├── config.js
-    │   └── config.example.js
-    ├── controllers/
-    ├── models/
-    ├── routes/
-    ├── public/
-    │   ├── css/
-    │   │   ├── style.css
-    │   │   └── auth.css
-    │   ├── js/
-    │   │   └── main.js
-    │   ├── images/
-    │   ├── index.html
-    │   ├── welcome.html
-    │   └── error.html
-    ├── views/
-    ├── middleware/
-    ├── .gitignore
-    ├── package.json
-    ├── package-lock.json
-    ├── server.js
-    └── README.md
+## Features
 
+1. **Authentication System**
+   - Session-based authentication
+   - Role-based access control
+   - Secure cookie handling
 
-2. Environment Variables: Use environment variables for configuration, especially for sensitive data like database credentials. You can use the dotenv package to manage these.
+2. **Interactive Dashboard**
+   - Dynamic graph visualization using Chart.js
+   - Customizable data parameters
+   - Responsive layout
 
+3. **Microsoft Integration**
+   - OneDrive file access
+   - Excel file processing
+   - Microsoft Graph API integration
 
+4. **Security Features**
+   - Session management
+   - Protected routes
+   - Environment variable configuration
+   - CORS protection
 
+## Setup and Installation
 
+1. Clone the repository
+2. Install dependencies:
+```bash:ERP-Peschaud/README.md
+npm install
+```
+3. Configure environment variables in `.env`:
+```
+MICROSOFT_CLIENT_ID=your_client_id
+MICROSOFT_CLIENT_SECRET=your_client_secret
+MICROSOFT_TENANT_ID=your_tenant_id
+MICROSOFT_REDIRECT_URI=http://localhost:3000/auth/callback
+SESSION_SECRET=your_session_secret
+```
+4. Start the server:
+```bash
+npm start
+```
 
-3. Database Integration: Plan for database integration. Choose a database (e.g., MongoDB, PostgreSQL, MySQL) and set up a connection. Use an ORM like Sequelize (for SQL databases) or Mongoose (for MongoDB) to manage database interactions.
-4. Modularize Code: Separate concerns by creating modules for different functionalities. For example, move authentication logic to a separate controller or service file.
-5. Routing: Use Express Router to manage routes in a modular way. Create a routes directory and define routes in separate files.
+## Development Guidelines
 
-6. Security: Implement security best practices:
--  Use HTTPS in production.
-- Hash passwords using libraries like bcrypt.
-- Implement input validation and sanitization.
-- Use helmet to set secure HTTP headers.
+1. **Styling**
+   - Follow the established CSS structure
+   - Use the French flag colors scheme (#002395, #FFFFFF, #ED2939)
+   - Maintain responsive design principles
 
-7. Testing: Set up a testing framework like Jest or Mocha to write unit and integration tests.
+2. **Security**
+   - Use HTTPS in production
+   - Implement proper input validation
+   - Follow authentication best practices
 
-8. Logging and Monitoring: Implement logging using a library like winston and consider setting up monitoring for your application.
+3. **Code Organization**
+   - Modular route handling
+   - Separate concerns (auth, business logic, etc.)
+   - Consistent error handling
 
-9. Documentation: Keep your README.md updated with setup instructions, usage, and contribution guidelines. Consider using tools like Swagger for API documentation.
+## Future Enhancements
 
-10. Version Control: Use branches for feature development and maintain a clear commit history. Consider using GitHub Actions or another CI/CD tool for automated testing and deployment.
-By implementing these changes, you'll create a solid foundation for your ERP system, making it easier to scale and maintain as it grows.
-
-STYLING: 
-
-
-
-This structure provides several benefits:
-Better organization of styles
-Reusable components and styles
-Faster page loads (browser caching)
-Easier maintenance
-Separation of concerns
-You might also want to consider:
-Using a CSS preprocessor like SASS/SCSS
-Implementing a CSS naming methodology like BEM
-Adding a CSS reset or normalize.css
-Using CSS variables for theming
-Setting up a build process to minify and optimize CSS files
-Would you like me to show you how to implement any of these additional features?
+- Database integration
+- Enhanced user management
+- Additional data visualization options
+- Extended Microsoft 365 integration
+- Automated testing implementation
