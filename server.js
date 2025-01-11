@@ -4,73 +4,86 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const credentials = require('./config');
-const authRoutes = require('./routes/auth');
-const helmet = require('helmet');
 const session = require('express-session');
-const onedriveRoutes = require('./routes/onedrive');
 
 const app = express();
 const PORT = 3000;
 
-// Middleware to parse URL-encoded bodies
+// Session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+
+// Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files from the 'public' folder with absolute path
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve public CSS files without authentication
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
 
-// Log incoming requests
-app.use((req, res, next) => {
-    console.log(`Incoming request: ${req.method} ${req.url}`);
+// Authentication middleware
+const checkAuth = (req, res, next) => {
+    // List of paths that don't require authentication
+    const publicPaths = ['/', '/index.html', '/login', '/logout', '/error.html'];
+    
+    // Allow public paths
+    if (publicPaths.some(path => req.path === path)) {
+        return next();
+    }
+
+    // Check if user is authenticated
+    if (!req.session.user) {
+        console.log('Unauthorized access attempt:', req.path);
+        return res.redirect('/');
+    }
+
     next();
-});
+};
 
-// Add a specific route for the root path
+// Root route handler
 app.get('/', (req, res) => {
-    console.log('Root path accessed');
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Handle login form submission
+// Login route
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    console.log('Login POST request received:', req.body);
-
-    // Check credentials against config file
+    
     const validUser = credentials.users.find(
-        user => user.username === username && user.password === password
+        user => user.username === username && password === password
     );
 
     if (validUser) {
-        res.redirect('/dashboard.html');
+        req.session.user = {
+            username: validUser.username
+        };
+        res.redirect('/home.html');
     } else {
         res.redirect('/error.html');
     }
 });
 
-// Create an HTTP server bound to Express
-const server = http.createServer(app);
+// Logout route
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+        }
+        res.redirect('/');
+    });
+});
 
-// Start listening with the HTTP server
-server.listen(PORT, () => {
+// Apply authentication check for all other routes
+app.use(checkAuth);
+
+// Serve static files after authentication check
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Start server
+app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
-    console.log(`Static files being served from: ${path.join(__dirname, 'public')}`);
 });
-
-// Log incoming requests to the server
-server.on('request', (req, res) => {
-    console.log(`Request received: ${req.method} ${req.url}`);
-});
-
-app.use('/auth', authRoutes);
-
-app.use(helmet());
-
-// Add session middleware
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
-    resave: false,
-    saveUninitialized: false
-}));
-
-// Add OneDrive routes
-app.use('/onedrive', onedriveRoutes);
