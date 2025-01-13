@@ -6,7 +6,6 @@
     <title>Home - ERP Peschaud</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/layout.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .page-container {
             display: flex;
@@ -85,6 +84,44 @@
             margin-bottom: 30px;
             color: #002395;
         }
+
+        .tables-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .table-wrapper {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .bold-cell {
+            font-weight: bold;
+            background-color: #f5f5f5;
+        }
+
+        h2 {
+            color: #002395;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -110,86 +147,79 @@
         </div>
 
         <div class="main-content">
-            <h1>Welcome to ERP Peschaud</h1>
-            <div class="graph-container">
-                <canvas id="graphCanvas"></canvas>
-                <div class="controls">
-                    <label for="constantInput">Enter C value:</label>
-                    <input type="number" id="constantInput" value="0" step="1">
-                    <button class="btn btn-primary" onclick="updateGraph()">Update Graph</button>
-                </div>
-            </div>
+            <div id="root"></div>
         </div>
     </div>
 
-    <script>
-        let myChart;
-        
-        function generatePoints(c) {
-            const points = [];
-            for (let x = -10; x <= 10; x += 0.5) {
-                points.push({
-                    x: x,
-                    y: x * x + parseFloat(c)
-                });
-            }
-            return points;
-        }
-
-        function createGraph(c) {
-            const ctx = document.getElementById('graphCanvas').getContext('2d');
-            
-            if (myChart) {
-                myChart.destroy();
-            }
-
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: `y = x² + ${c}`,
-                        data: generatePoints(c),
-                        borderColor: '#002395',
-                        borderWidth: 2,
-                        fill: false,
-                        tension: 0.4
-                    }]
+    <!-- React Dependencies -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <!-- Your React Component -->
+    <script type="text/babel">
+        const Home = () => {
+            const tables = [
+                {
+                    title: "Table 1",
+                    data: [
+                        ["Header 1", "Value 1", "Value 2", "Value 3"],
+                        ["Row 1", "Data 1", "Data 2", "Data 3"],
+                        ["Row 2", "Data 4", "Data 5", "Data 6"],
+                        ["Row 3", "Data 7", "Data 8", "Data 9"]
+                    ]
                 },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            position: 'center',
-                            grid: {
-                                color: '#ddd'
-                            }
-                        },
-                        y: {
-                            type: 'linear',
-                            position: 'center',
-                            grid: {
-                                color: '#ddd'
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Quadratic Function'
-                        }
-                    }
+                {
+                    title: "Table 2",
+                    data: [
+                        ["Header 1", "Value 1", "Value 2", "Value 3"],
+                        ["Row 1", "Data 1", "Data 2", "Data 3"],
+                        ["Row 2", "Data 4", "Data 5", "Data 6"],
+                        ["Row 3", "Data 7", "Data 8", "Data 9"]
+                    ]
+                },
+                {
+                    title: "Table 3",
+                    data: [
+                        ["Header 1", "Value 1", "Value 2", "Value 3"],
+                        ["Row 1", "Data 1", "Data 2", "Data 3"],
+                        ["Row 2", "Data 4", "Data 5", "Data 6"],
+                        ["Row 3", "Data 7", "Data 8", "Data 9"]
+                    ]
                 }
-            });
-        }
+            ];
 
-        function updateGraph() {
-            const c = document.getElementById('constantInput').value;
-            createGraph(c);
-        }
+            return (
+                <div className="tables-container">
+                    {tables.map((table, index) => (
+                        <div key={index} className="table-wrapper">
+                            <h2>{table.title}</h2>
+                            <table className="data-table">
+                                <tbody>
+                                    {table.data.map((row, rowIndex) => (
+                                        <tr key={rowIndex}>
+                                            {row.map((cell, cellIndex) => {
+                                                const isBold = rowIndex === 0 || cellIndex === 0;
+                                                return (
+                                                    <td 
+                                                        key={cellIndex}
+                                                        className={isBold ? 'bold-cell' : ''}
+                                                    >
+                                                        {cell}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ))}
+                </div>
+            );
+        };
 
-        // Initial graph
-        createGraph(0);
+        ReactDOM.render(<Home />, document.getElementById('root'));
     </script>
 </body>
 </html> 
