@@ -1,73 +1,104 @@
 # ERP-Peschaud
 
-A web-based Enterprise Resource Planning system built with Express.js and modern web technologies.
+A web-based Enterprise Resource Planning system built with Express.js and modern web technologies, featuring document management and financial data tracking.
 
 ## Tech Stack
 
 - **Backend**: Node.js with Express.js
-- **Frontend**: HTML5, CSS3, JavaScript
+- **Database**: MongoDB Atlas
+- **Frontend**: 
+  - HTML5, CSS3, JavaScript
+  - React (for interactive components)
+  - Chart.js for data visualization
 - **Authentication**: Express-session
-- **Data Visualization**: Chart.js
+- **File Storage**: MongoDB GridFS
 - **Microsoft Integration**: Microsoft Graph API
 - **Excel Processing**: ExcelJS
 
 ## Project Structure
 
+```
 ERP-Peschaud/
+├── config/
+│   └── database.js     # MongoDB configuration
+├── models/
+│   ├── Document.js     # Document schema
+│   ├── validation.js   # Data validators
+│   └── indexes.js      # Database indexes
 ├── public/
 │   ├── css/
-│   │   ├── auth.css      # Authentication-related styles
-│   │   ├── layout.css    # Layout and structure styles
-│   │   └── style.css     # Global styles
-│   ├── dashboard.html    # Main dashboard interface
-│   ├── home.html        # Home page with interactive graph
-│   ├── index.html       # Login page
-│   └── welcome.html     # Post-login welcome page
+│   │   ├── auth.css    # Authentication styles
+│   │   ├── layout.css  # Layout styles
+│   │   └── style.css   # Global styles
+│   ├── dashboard.html  # Dashboard with React/Chart.js
+│   ├── home.html      # Home page
+│   ├── index.html     # Login page
+│   └── welcome.html   # Welcome page
 ├── routes/
-│   ├── auth.js         # Authentication routes
-│   └── onedrive.js     # Microsoft OneDrive integration
-├── config.js           # Application configuration
-├── server.js           # Main application entry point
-└── .env               # Environment variables
+│   ├── auth.js        # Authentication routes
+│   ├── documents.js   # Document management
+│   └── onedrive.js    # Microsoft integration
+├── utils/
+│   └── backup.js      # Database backup utility
+├── config.js          # Application configuration
+├── server.js          # Main application entry
+└── .env              # Environment variables
+```
 
 ## Features
 
-1. **Authentication System**
+1. **Document Management**
+   - PDF file storage using GridFS
+   - Metadata attachment
+   - Search and retrieval
+   - File categorization
+
+2. **Financial Data**
+   - Transaction tracking
+   - Currency support
+   - Department/Subsidiary organization
+   - Data validation
+
+3. **Authentication System**
    - Session-based authentication
    - Role-based access control
    - Secure cookie handling
 
-2. **Interactive Dashboard**
-   - Dynamic graph visualization using Chart.js
-   - Customizable data parameters
-   - Responsive layout
+4. **Interactive Dashboard**
+   - React-based components
+   - Chart.js visualizations
+   - Real-time data updates
 
-3. **Microsoft Integration**
-   - OneDrive file access
-   - Excel file processing
-   - Microsoft Graph API integration
+## Database Setup
 
-4. **Security Features**
-   - Session management
-   - Protected routes
-   - Environment variable configuration
-   - CORS protection
+1. **MongoDB Atlas Configuration**
+   - Cloud-hosted database
+   - Automated backups
+   - Scalable storage
+   - Secure access
 
-## Setup and Installation
+2. **Data Models**
+   - Document storage
+   - Financial records
+   - User management
+   - Metadata indexing
+
+## Setup Instructions
 
 1. Clone the repository
 2. Install dependencies:
-```bash:ERP-Peschaud/README.md
+```bash
 npm install
 ```
+
 3. Configure environment variables in `.env`:
-```
+```env
+MONGODB_URI=your_mongodb_connection_string
+SESSION_SECRET=your_session_secret
 MICROSOFT_CLIENT_ID=your_client_id
 MICROSOFT_CLIENT_SECRET=your_client_secret
-MICROSOFT_TENANT_ID=your_tenant_id
-MICROSOFT_REDIRECT_URI=http://localhost:3000/auth/callback
-SESSION_SECRET=your_session_secret
 ```
+
 4. Start the server:
 ```bash
 npm start
@@ -75,25 +106,29 @@ npm start
 
 ## Development Guidelines
 
-1. **Styling**
-   - Follow the established CSS structure
-   - Use the French flag colors scheme (#002395, #FFFFFF, #ED2939)
-   - Maintain responsive design principles
+1. **Database Best Practices**
+   - Use provided validators
+   - Follow schema definitions
+   - Implement proper indexing
+   - Regular backups
 
 2. **Security**
-   - Use HTTPS in production
-   - Implement proper input validation
-   - Follow authentication best practices
+   - HTTPS in production
+   - Input validation
+   - Secure file handling
+   - Authentication checks
 
 3. **Code Organization**
-   - Modular route handling
-   - Separate concerns (auth, business logic, etc.)
+   - Modular components
+   - Clear documentation
    - Consistent error handling
+   - Type checking
 
 ## Future Enhancements
 
-- Database integration
-- Enhanced user management
-- Additional data visualization options
-- Extended Microsoft 365 integration
-- Automated testing implementation
+- Enhanced search capabilities
+- Advanced reporting features
+- Batch file processing
+- API documentation
+- Automated testing
+- Performance monitoring

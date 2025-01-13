@@ -1,48 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Home = () => {
-    // Sample data for the tables
-    const tables = [
-        {
-            title: "Table 1",
-            data: [
-                ["Header 1", "Value 1", "Value 2", "Value 3"],
-                ["Row 1", "Data 1", "Data 2", "Data 3"],
-                ["Row 2", "Data 4", "Data 5", "Data 6"],
-                ["Row 3", "Data 7", "Data 8", "Data 9"]
-            ]
-        },
-        {
-            title: "Table 2",
-            data: [
-                ["Header 1", "Value 1", "Value 2", "Value 3"],
-                ["Row 1", "Data 1", "Data 2", "Data 3"],
-                ["Row 2", "Data 4", "Data 5", "Data 6"],
-                ["Row 3", "Data 7", "Data 8", "Data 9"]
-            ]
-        },
-        {
-            title: "Table 3",
-            data: [
-                ["Header 1", "Value 1", "Value 2", "Value 3"],
-                ["Row 1", "Data 1", "Data 2", "Data 3"],
-                ["Row 2", "Data 4", "Data 5", "Data 6"],
-                ["Row 3", "Data 7", "Data 8", "Data 9"]
-            ]
+    const [tables, setTables] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchTables();
+    }, []);
+
+    const fetchTables = async () => {
+        try {
+            const response = await fetch('/api/tables');
+            if (!response.ok) {
+                throw new Error('Failed to fetch tables');
+            }
+            const data = await response.json();
+            setTables(data);
+            setLoading(false);
+        } catch (err) {
+            setError(err.message);
+            setLoading(false);
         }
-    ];
+    };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div className="tables-container">
             {tables.map((table, index) => (
-                <div key={index} className="table-wrapper">
+                <div key={table._id} className="table-wrapper">
                     <h2>{table.title}</h2>
                     <table className="data-table">
                         <tbody>
                             {table.data.map((row, rowIndex) => (
                                 <tr key={rowIndex}>
                                     {row.map((cell, cellIndex) => {
-                                        // Make first row and first column bold
                                         const isBold = rowIndex === 0 || cellIndex === 0;
                                         return (
                                             <td 

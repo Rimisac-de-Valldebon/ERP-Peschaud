@@ -5,6 +5,8 @@ const path = require('path');
 const http = require('http');
 const credentials = require('./config');
 const session = require('express-session');
+const connectDB = require('./config/db');
+const tableRoutes = require('./routes/api/tables');
 
 const app = express();
 const PORT = 3000;
@@ -82,6 +84,12 @@ app.use(checkAuth);
 
 // Serve static files after authentication check
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Connect to MongoDB
+connectDB();
+
+// Add API routes
+app.use('/api/tables', tableRoutes);
 
 // Start server
 app.listen(PORT, () => {
